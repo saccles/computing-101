@@ -1,0 +1,71 @@
+win:
+   0x00005edc76a2f951 <+0>:     endbr64 
+   0x00005edc76a2f955 <+4>:     push   rbp
+   0x00005edc76a2f956 <+5>:     mov    rbp,rsp
+   0x00005edc76a2f959 <+8>:     sub    rsp,0x10
+
+   ; Overwrite the stack canary at offset -0x8 from rbp.
+   0x00005edc76a2f95d <+12>:    mov    QWORD PTR [rbp-0x8],0x0
+   0x00005edc76a2f965 <+20>:    mov    rax,QWORD PTR [rbp-0x8]
+   0x00005edc76a2f969 <+24>:    mov    eax,DWORD PTR [rax]
+   0x00005edc76a2f96b <+26>:    lea    edx,[rax+0x1]
+   0x00005edc76a2f96e <+29>:    mov    rax,QWORD PTR [rbp-0x8]
+   0x00005edc76a2f972 <+33>:    mov    DWORD PTR [rax],edx
+   0x00005edc76a2f974 <+35>:    lea    rdi,[rip+0x73e]        # 0x5edc76a300b9
+
+   0x00005edc76a2f97b <+42>:    call   0x5edc76a2f180 <puts@plt>
+   
+   0x00005edc76a2f980 <+47>:    mov    esi,0x0
+   0x00005edc76a2f985 <+52>:    lea    rdi,[rip+0x749]        # 0x5edc76a300d5
+   0x00005edc76a2f98c <+59>:    mov    eax,0x0
+   0x00005edc76a2f991 <+64>:    call   0x5edc76a2f240 <open@plt>
+   0x00005edc76a2f996 <+69>:    mov    DWORD PTR [rip+0x26a4],eax        # 0x5edc76a32040 <flag_fd.5712>
+   0x00005edc76a2f99c <+75>:    mov    eax,DWORD PTR [rip+0x269e]        # 0x5edc76a32040 <flag_fd.5712>
+   0x00005edc76a2f9a2 <+81>:    test   eax,eax
+   0x00005edc76a2f9a4 <+83>:    jns    0x5edc76a2f9ef <win+158>
+   0x00005edc76a2f9a6 <+85>:    call   0x5edc76a2f170 <__errno_location@plt>
+   0x00005edc76a2f9ab <+90>:    mov    eax,DWORD PTR [rax]
+   0x00005edc76a2f9ad <+92>:    mov    edi,eax
+   0x00005edc76a2f9af <+94>:    call   0x5edc76a2f270 <strerror@plt>
+   0x00005edc76a2f9b4 <+99>:    mov    rsi,rax
+   0x00005edc76a2f9b7 <+102>:   lea    rdi,[rip+0x722]        # 0x5edc76a300e0
+   0x00005edc76a2f9be <+109>:   mov    eax,0x0
+   0x00005edc76a2f9c3 <+114>:   call   0x5edc76a2f1c0 <printf@plt>
+   0x00005edc76a2f9c8 <+119>:   call   0x5edc76a2f1f0 <geteuid@plt>
+   0x00005edc76a2f9cd <+124>:   test   eax,eax
+   0x00005edc76a2f9cf <+126>:   je     0x5edc76a2fa66 <win+277>
+   0x00005edc76a2f9d5 <+132>:   lea    rdi,[rip+0x734]        # 0x5edc76a30110
+   0x00005edc76a2f9dc <+139>:   call   0x5edc76a2f180 <puts@plt>
+   0x00005edc76a2f9e1 <+144>:   lea    rdi,[rip+0x750]        # 0x5edc76a30138
+   0x00005edc76a2f9e8 <+151>:   call   0x5edc76a2f180 <puts@plt>
+   0x00005edc76a2f9ed <+156>:   jmp    0x5edc76a2fa66 <win+277>
+   0x00005edc76a2f9ef <+158>:   mov    eax,DWORD PTR [rip+0x264b]        # 0x5edc76a32040 <flag_fd.5712>
+   0x00005edc76a2f9f5 <+164>:   mov    edx,0x100
+   0x00005edc76a2f9fa <+169>:   lea    rsi,[rip+0x265f]        # 0x5edc76a32060 <flag.5711>
+   0x00005edc76a2fa01 <+176>:   mov    edi,eax
+   0x00005edc76a2fa03 <+178>:   call   0x5edc76a2f200 <read@plt>
+   0x00005edc76a2fa08 <+183>:   mov    DWORD PTR [rip+0x2752],eax        # 0x5edc76a32160 <flag_length.5713>
+   0x00005edc76a2fa0e <+189>:   mov    eax,DWORD PTR [rip+0x274c]        # 0x5edc76a32160 <flag_length.5713>
+   0x00005edc76a2fa14 <+195>:   test   eax,eax
+   0x00005edc76a2fa16 <+197>:   jg     0x5edc76a2fa3c <win+235>
+   0x00005edc76a2fa18 <+199>:   call   0x5edc76a2f170 <__errno_location@plt>
+   0x00005edc76a2fa1d <+204>:   mov    eax,DWORD PTR [rax]
+   0x00005edc76a2fa1f <+206>:   mov    edi,eax
+   0x00005edc76a2fa21 <+208>:   call   0x5edc76a2f270 <strerror@plt>
+   0x00005edc76a2fa26 <+213>:   mov    rsi,rax
+   0x00005edc76a2fa29 <+216>:   lea    rdi,[rip+0x760]        # 0x5edc76a30190
+   0x00005edc76a2fa30 <+223>:   mov    eax,0x0
+   0x00005edc76a2fa35 <+228>:   call   0x5edc76a2f1c0 <printf@plt>
+   0x00005edc76a2fa3a <+233>:   jmp    0x5edc76a2fa67 <win+278>
+   0x00005edc76a2fa3c <+235>:   mov    eax,DWORD PTR [rip+0x271e]        # 0x5edc76a32160 <flag_length.5713>
+   0x00005edc76a2fa42 <+241>:   cdqe   
+   0x00005edc76a2fa44 <+243>:   mov    rdx,rax
+   0x00005edc76a2fa47 <+246>:   lea    rsi,[rip+0x2612]        # 0x5edc76a32060 <flag.5711>
+   0x00005edc76a2fa4e <+253>:   mov    edi,0x1
+   0x00005edc76a2fa53 <+258>:   call   0x5edc76a2f1a0 <write@plt>
+   0x00005edc76a2fa58 <+263>:   lea    rdi,[rip+0x75b]        # 0x5edc76a301ba
+   0x00005edc76a2fa5f <+270>:   call   0x5edc76a2f180 <puts@plt>
+   0x00005edc76a2fa64 <+275>:   jmp    0x5edc76a2fa67 <win+278>
+   0x00005edc76a2fa66 <+277>:   nop
+   0x00005edc76a2fa67 <+278>:   leave  
+   0x00005edc76a2fa68 <+279>:   ret

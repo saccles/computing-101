@@ -1,0 +1,74 @@
+main:
+    0x0000000000001a75 <+0>:     endbr64 
+
+    ; Save rbp and allocate 30 bytes on the stack.
+    0x0000000000001a79 <+4>:     push   rbp 
+    0x0000000000001a7a <+5>:     mov    rbp,rsp
+    0x0000000000001a7d <+8>:     sub    rsp,0x30
+ 
+    0x0000000000001a81 <+12>:    mov    DWORD PTR [rbp-0x14],edi; rbp-0x14 = edi
+    0x0000000000001a84 <+15>:    mov    QWORD PTR [rbp-0x20],rsi; rbp-0x20 = rsi
+    0x0000000000001a88 <+19>:    mov    QWORD PTR [rbp-0x28],rdx; rbp-0x28 = rdx
+
+    ; Set stack canary at rbp-0x8 on the stack.
+    0x0000000000001a8c <+23>:    mov    rax,QWORD PTR fs:0x28
+    0x0000000000001a95 <+32>:    mov    QWORD PTR [rbp-0x8],rax
+    
+    ; Change buffering mode of given buffer 
+    ; (rdi = file stream, rsi = buffer = 0, 
+    ;  rdx = buffering mode = no buffering, 
+    ;  rcx = buffer size = 0)
+    0x0000000000001a99 <+36>:    xor    eax,eax
+    0x0000000000001a9b <+38>:    mov    rax,QWORD PTR [rip+0x258e]        # 0x4030 <stdin@@GLIBC_2.2.5>
+    0x0000000000001aa2 <+45>:    mov    ecx,0x0
+    0x0000000000001aa7 <+50>:    mov    edx,0x2
+    0x0000000000001aac <+55>:    mov    esi,0x0
+    0x0000000000001ab1 <+60>:    mov    rdi,rax
+    0x0000000000001ab4 <+63>:    call   0x1230 <setvbuf@plt>
+    0x0000000000001ab9 <+68>:    mov    rax,QWORD PTR [rip+0x2560]        # 0x4020 <stdout@@GLIBC_2.2.5>
+    0x0000000000001ac0 <+75>:    mov    ecx,0x0
+    0x0000000000001ac5 <+80>:    mov    edx,0x2
+    0x0000000000001aca <+85>:    mov    esi,0x0
+    0x0000000000001acf <+90>:    mov    rdi,rax
+    0x0000000000001ad2 <+93>:    call   0x1230 <setvbuf@plt>
+
+    ; Print challenge instructions.
+    0x0000000000001ad7 <+98>:    lea    rdi,[rip+0x6de]        # 0x21bc
+    0x0000000000001ade <+105>:   call   0x1180 <puts@plt>
+    0x0000000000001ae3 <+110>:   mov    rax,QWORD PTR [rbp-0x20]
+    0x0000000000001ae7 <+114>:   mov    rax,QWORD PTR [rax]
+    0x0000000000001aea <+117>:   mov    rsi,rax
+    0x0000000000001aed <+120>:   lea    rdi,[rip+0x6cc]        # 0x21c0
+    0x0000000000001af4 <+127>:   mov    eax,0x0
+    0x0000000000001af9 <+132>:   call   0x11c0 <printf@plt>
+    0x0000000000001afe <+137>:   lea    rdi,[rip+0x6b7]        # 0x21bc
+    0x0000000000001b05 <+144>:   call   0x1180 <puts@plt>
+    0x0000000000001b0a <+149>:   mov    edi,0xa
+    0x0000000000001b0f <+154>:   call   0x1160 <putchar@plt>
+    0x0000000000001b14 <+159>:   lea    rdi,[rip+0x6bd]        # 0x21d8
+    0x0000000000001b1b <+166>:   call   0x1180 <puts@plt>
+    0x0000000000001b20 <+171>:   lea    rdi,[rip+0x729]        # 0x2250
+    0x0000000000001b27 <+178>:   call   0x1180 <puts@plt>
+    0x0000000000001b2c <+183>:   lea    rdi,[rip+0x77d]        # 0x22b0
+    0x0000000000001b33 <+190>:   call   0x1180 <puts@plt>
+    0x0000000000001b38 <+195>:   lea    rdi,[rip+0x7e9]        # 0x2328
+    0x0000000000001b3f <+202>:   call   0x1180 <puts@plt>
+    0x0000000000001b44 <+207>:   lea    rdi,[rip+0x85d]        # 0x23a8
+    0x0000000000001b4b <+214>:   call   0x1180 <puts@plt>
+    0x0000000000001b50 <+219>:   lea    rdi,[rip+0x8c9]        # 0x2420
+    0x0000000000001b57 <+226>:   call   0x1180 <puts@plt>
+    0x0000000000001b5c <+231>:   lea    rdi,[rip+0x935]        # 0x2498
+    0x0000000000001b63 <+238>:   call   0x1180 <puts@plt>
+    0x0000000000001b68 <+243>:   lea    rdi,[rip+0x971]        # 0x24e0
+    0x0000000000001b6f <+250>:   call   0x1180 <puts@plt>
+    0x0000000000001b74 <+255>:   lea    rdi,[rip+0x9d9]        # 0x2554
+    0x0000000000001b7b <+262>:   call   0x1180 <puts@plt>
+    0x0000000000001b80 <+267>:   lea    rdi,[rip+0x9e9]        # 0x2570
+    0x0000000000001b87 <+274>:   call   0x1180 <puts@plt>
+    0x0000000000001b8c <+279>:   lea    rdi,[rip+0xa35]        # 0x25c8
+    0x0000000000001b93 <+286>:   call   0x1180 <puts@plt>
+    
+    0x0000000000001b98 <+291>:   int3   
+    0x0000000000001b99 <+292>:   nop
+    0x0000000000001b9a <+293>:   mov    edi,0x2a
+    0x0000000000001b9f <+298>:   call   0x1260 <exit@plt>
