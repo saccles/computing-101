@@ -2,7 +2,6 @@
 .global _start
 
 _start:
-
 string_to_lowercase:
     mov rsi, 0
 
