@@ -17,15 +17,15 @@ _start:
     
     # Create 16-byte sock_addr struct on the stack.
     sub rsp, 16
-    mov WORD PTR [rbp - 16], 2 # sin_family = AF_INET
-    mov WORD PTR [rbp - 14], 0x5000 # sin_port = htons(80)
-    mov DWORD PTR [rbp - 12], 0x00000000 # sin_addr = inet_aton("0.0.0.0")
-    mov QWORD PTR [rbp - 8], 0 # padding for struct to equal 16 bytes 
+    mov WORD PTR [rbp-16], 2 # sin_family = AF_INET
+    mov WORD PTR [rbp-14], 0x5000 # sin_port = htons(80)
+    mov DWORD PTR [rbp-12], 0x00000000 # sin_addr = inet_aton("0.0.0.0")
+    mov QWORD PTR [rbp-8], 0 # padding for struct to equal 16 bytes 
 
     mov r10, rax # Save file descriptor referring to original socket.
 
     mov rdi, rax # sockfd = original socket
-    lea rsi, [rbp - 16] # addr = *sockaddr_in
+    lea rsi, [rbp-16] # addr = *sockaddr_in
     mov rdx, 16 # addrLen = 16
     mov rax, 49 # Bind system call.
     syscall
@@ -83,7 +83,7 @@ fork_child_code:
     mov rdi, r8 # fd = new connection socket
     mov rbp, rsp # Save current stack state.
     sub rsp, 512 # Allocate space for a 512-byte buffer.
-    lea rsi, [rbp - 512] # buf = rsi
+    lea rsi, [rbp-512] # buf = rsi
     mov rdx, 512 # count = 512
     mov rax, 0 # Read system call.
     syscall
@@ -91,14 +91,14 @@ fork_child_code:
     # If the http request is a get request, 
     # perform a get request.
     lea rdi, [GET]
-    lea rsi, [rbp - 512]
+    lea rsi, [rbp-512]
     cmpsd
     je get_request_code
 
     # Otherwise, if the http request is a post request,
     # perform a post request.
     lea rdi, [POST]
-    lea rsi, [rbp - 512]
+    lea rsi, [rbp-512]
     cmpsd
     je post_request_code
 
@@ -114,8 +114,8 @@ get_request_code:
     # Open file specified in get request.  
     # These instructions parse the file path from the get request
     # and use the open system call to open the file at the file path.
-    lea rdi, [rbp - 508] # *pathname = data in buffer starting at offset [rbp - 508]
-    mov BYTE PTR [rbp - 492], 0x00 # Stop reading data from buffer after 20 bytes (null-byte).
+    lea rdi, [rbp-508] # *pathname = data in buffer starting at offset [rbp-508]
+    mov BYTE PTR [rbp-492], 0x00 # Stop reading data from buffer after 20 bytes (null-byte).
     mov rsi, 0x00000000 # mode = O_RDONLY
     mov rax, 2 # Open system call.
     syscall
@@ -127,7 +127,7 @@ get_request_code:
 
     # Read file specified in get request into buffer.
     mov rdi, rax # fd = file descriptor of opened file specified in get request
-    lea rsi, [rbp - 512] # buf = [rbp - 512]
+    lea rsi, [rbp-512] # buf = [rbp-512]
     mov rdx, 512 # count = 512
     mov rax, 0 # Read system call.
     syscall
@@ -146,7 +146,7 @@ get_request_code:
     syscall
 
     # Write contents of requested file over connection.
-    lea rsi, [rbp - 512] # buf = [rbp - 512]
+    lea rsi, [rbp-512] # buf = [rbp-512]
     mov rdx, r9 # count = r9 (number of bytes read in from specified file)
     mov rax, 1 # Write system call.
     syscall
@@ -165,8 +165,8 @@ post_request_code:
     # Open (or create) file specified in post request.  
     # These instructions parse the file path from the post request
     # and use the open system call to open the file at the file path.
-    lea rdi, [rbp - 507] # *pathname = data in buffer starting at offset [rbp - 507]
-    mov BYTE PTR [rbp - 491], 0x00 # Stop reading data from buffer after 21 bytes (null-byte).
+    lea rdi, [rbp-507] # *pathname = data in buffer starting at offset [rbp-507]
+    mov BYTE PTR [rbp-491], 0x00 # Stop reading data from buffer after 21 bytes (null-byte).
     mov rsi, 000000101 # flags = O_WRONLY,O_CREAT (bitwise ored octal)
     mov rdx, 0777 # mode = 0777 (octal)
     mov rax, 2 # Open system call.
@@ -176,7 +176,7 @@ post_request_code:
 
     # Convert Content-Length string to integer.
     # Adopted from https://gist.github.com/tnewman/63b64284196301c4569f750a08ef52b2.
-    lea rdi, [rbp - 336]
+    lea rdi, [rbp-336]
     call base_10_string_to_integer            
 
     cmp rax, 99
@@ -184,22 +184,22 @@ post_request_code:
     jmp three_byte_content_length 
 
 two_byte_content_length:
-    lea rsi, [rbp - 330]
+    lea rsi, [rbp-330]
     jmp file_write
 
 three_byte_content_length:
-    lea rsi, [rbp - 329]
+    lea rsi, [rbp-329]
     jmp file_write
 
 file_write:
 
     # Write data specified in post request to newly created file.
-        mov BYTE PTR [rbp - 491], 0x20 # Remove null-byte from buffer.
-        mov rdi, r9 # rdi = opened file
-        #lea rsi, [rbp - 329] # buf = data in buffer starting at offset [rbp - 329]
-        mov rdx, rax
-        mov rax, 1 # Write system call.
-        syscall
+    mov BYTE PTR [rbp-491], 0x20 # Remove null-byte from buffer.
+    mov rdi, r9 # rdi = opened file
+    #lea rsi, [rbp-329] # buf = data in buffer starting at offset [rbp-329]
+    mov rdx, rax
+    mov rax, 1 # Write system call.
+    syscall
 
     # Close file descriptor referring to specified file in post request.
     mov rax, 3 # Close system call.
